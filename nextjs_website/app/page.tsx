@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { getTransactions, getTransactionTotals, getAllMarketData, type Transaction, type AllMarketData } from '@/lib/api'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { 
-  faDollarSign, 
-  faChartLine, 
-  faWallet, 
-  faStickyNote, 
-  faChartBar, 
+import {
+  faDollarSign,
+  faChartLine,
+  faWallet,
+  faStickyNote,
+  faChartBar,
   faBriefcase,
   faCoins,
   faGem,
@@ -133,11 +133,10 @@ export default function Home() {
               </div>
 
               {/* Balance */}
-              <div className={`bg-gradient-to-br rounded-xl p-4 sm:p-6 shadow-lg text-white sm:col-span-2 lg:col-span-1 ${
-                totals.balance >= 0 
-                  ? 'from-blue-500 to-cyan-600' 
+              <div className={`bg-gradient-to-br rounded-xl p-4 sm:p-6 shadow-lg text-white sm:col-span-2 lg:col-span-1 ${totals.balance >= 0
+                  ? 'from-blue-500 to-cyan-600'
                   : 'from-orange-500 to-red-600'
-              }`}>
+                }`}>
                 <div className="flex items-center justify-between mb-3 sm:mb-4">
                   <div className="flex-1 min-w-0">
                     <p className="text-white/80 text-xs sm:text-sm mb-1">Balance</p>
@@ -152,6 +151,97 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            {/* Market Data Summary */}
+            {marketData && (
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-gray-100 p-4 sm:p-6 shadow-sm mb-6 sm:mb-8">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Market Overview</h2>
+                  <Link
+                    href="/markets"
+                    className="text-purple-600 hover:text-purple-700 text-xs sm:text-sm font-medium transition-colors"
+                  >
+                    View All →
+                  </Link>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                  {marketData.bitcoin && (
+                    <div className="bg-gradient-to-br from-orange-500 to-yellow-600 rounded-lg p-3 sm:p-4 text-white">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs sm:text-sm font-medium">Bitcoin</span>
+                        <FontAwesomeIcon icon={faCoins} className="text-lg sm:text-xl" />
+                      </div>
+                      <p className="text-lg sm:text-xl font-bold mb-1">
+                        ${marketData.bitcoin.price.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                      </p>
+                      <p className={`text-xs sm:text-sm font-medium ${marketData.bitcoin.change_24h >= 0 ? 'text-green-100' : 'text-red-100'
+                        }`}>
+                        {marketData.bitcoin.change_24h >= 0 ? '+' : ''}{marketData.bitcoin.change_24h.toFixed(2)}%
+                      </p>
+                    </div>
+                  )}
+                  {marketData.ethereum && (
+                    <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg p-3 sm:p-4 text-white">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs sm:text-sm font-medium">Ethereum</span>
+                        <FontAwesomeIcon icon={faGem} className="text-lg sm:text-xl" />
+                      </div>
+                      <p className="text-lg sm:text-xl font-bold mb-1">
+                        ${marketData.ethereum.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}
+                      </p>
+                      <p className={`text-xs sm:text-sm font-medium ${marketData.ethereum.change_24h >= 0 ? 'text-green-100' : 'text-red-100'
+                        }`}>
+                        {marketData.ethereum.change_24h >= 0 ? '+' : ''}{marketData.ethereum.change_24h.toFixed(2)}%
+                      </p>
+                    </div>
+                  )}
+                  {marketData.gold && marketData.gold.price > 0 && (
+                    <div className="bg-gradient-to-br from-yellow-500 to-amber-600 rounded-lg p-3 sm:p-4 text-white">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs sm:text-sm font-medium">Gold (oz)</span>
+                        <FontAwesomeIcon icon={faGem} className="text-lg sm:text-xl" />
+                      </div>
+                      <p className="text-lg sm:text-xl font-bold mb-1">
+                        ${marketData.gold.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}
+                      </p>
+                      <p className={`text-xs sm:text-sm font-medium ${marketData.gold.change_24h >= 0 ? 'text-green-100' : 'text-red-100'
+                        }`}>
+                        {marketData.gold.change_24h >= 0 ? '+' : ''}{marketData.gold.change_24h.toFixed(2)}%
+                      </p>
+                    </div>
+                  )}
+                  {marketData.bnb && (
+                    <div className="bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg p-3 sm:p-4 text-white">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs sm:text-sm font-medium">BNB</span>
+                        <FontAwesomeIcon icon={faCoins} className="text-lg sm:text-xl" />
+                      </div>
+                      <p className="text-lg sm:text-xl font-bold mb-1">
+                        ${marketData.bnb.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}
+                      </p>
+                      <p className={`text-xs sm:text-sm font-medium ${marketData.bnb.change_24h >= 0 ? 'text-green-100' : 'text-red-100'
+                        }`}>
+                        {marketData.bnb.change_24h >= 0 ? '+' : ''}{marketData.bnb.change_24h.toFixed(2)}%
+                      </p>
+                    </div>
+                  )}
+                  {marketData.sp500 && (
+                    <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg p-3 sm:p-4 text-white">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs sm:text-sm font-medium">S&P 500</span>
+                        <FontAwesomeIcon icon={faArrowTrendUp} className="text-lg sm:text-xl" />
+                      </div>
+                      <p className="text-lg sm:text-xl font-bold mb-1">
+                        {marketData.sp500.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}
+                      </p>
+                      <p className={`text-xs sm:text-sm font-medium ${marketData.sp500.change_24h >= 0 ? 'text-green-100' : 'text-red-100'
+                        }`}>
+                        {marketData.sp500.change_24h >= 0 ? '+' : ''}{marketData.sp500.change_24h.toFixed(2)}%
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Quick Actions */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6 sm:mb-8">
@@ -270,103 +360,6 @@ export default function Home() {
               </Link>
             </div>
 
-            {/* Market Data Summary */}
-            {marketData && (
-              <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-gray-100 p-4 sm:p-6 shadow-sm mb-6 sm:mb-8">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Market Overview</h2>
-                  <Link
-                    href="/markets"
-                    className="text-purple-600 hover:text-purple-700 text-xs sm:text-sm font-medium transition-colors"
-                  >
-                    View All →
-                  </Link>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                  {marketData.bitcoin && (
-                    <div className="bg-gradient-to-br from-orange-500 to-yellow-600 rounded-lg p-3 sm:p-4 text-white">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs sm:text-sm font-medium">Bitcoin</span>
-                        <FontAwesomeIcon icon={faCoins} className="text-lg sm:text-xl" />
-                      </div>
-                      <p className="text-lg sm:text-xl font-bold mb-1">
-                        ${marketData.bitcoin.price.toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                      </p>
-                      <p className={`text-xs sm:text-sm font-medium ${
-                        marketData.bitcoin.change_24h >= 0 ? 'text-green-100' : 'text-red-100'
-                      }`}>
-                        {marketData.bitcoin.change_24h >= 0 ? '+' : ''}{marketData.bitcoin.change_24h.toFixed(2)}%
-                      </p>
-                    </div>
-                  )}
-                  {marketData.ethereum && (
-                    <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg p-3 sm:p-4 text-white">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs sm:text-sm font-medium">Ethereum</span>
-                        <FontAwesomeIcon icon={faGem} className="text-lg sm:text-xl" />
-                      </div>
-                      <p className="text-lg sm:text-xl font-bold mb-1">
-                        ${marketData.ethereum.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}
-                      </p>
-                      <p className={`text-xs sm:text-sm font-medium ${
-                        marketData.ethereum.change_24h >= 0 ? 'text-green-100' : 'text-red-100'
-                      }`}>
-                        {marketData.ethereum.change_24h >= 0 ? '+' : ''}{marketData.ethereum.change_24h.toFixed(2)}%
-                      </p>
-                    </div>
-                  )}
-                  {marketData.gold && marketData.gold.price > 0 && (
-                    <div className="bg-gradient-to-br from-yellow-500 to-amber-600 rounded-lg p-3 sm:p-4 text-white">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs sm:text-sm font-medium">Gold (oz)</span>
-                        <FontAwesomeIcon icon={faGem} className="text-lg sm:text-xl" />
-                      </div>
-                      <p className="text-lg sm:text-xl font-bold mb-1">
-                        ${marketData.gold.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}
-                      </p>
-                      <p className={`text-xs sm:text-sm font-medium ${
-                        marketData.gold.change_24h >= 0 ? 'text-green-100' : 'text-red-100'
-                      }`}>
-                        {marketData.gold.change_24h >= 0 ? '+' : ''}{marketData.gold.change_24h.toFixed(2)}%
-                      </p>
-                    </div>
-                  )}
-                  {marketData.bnb && (
-                    <div className="bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg p-3 sm:p-4 text-white">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs sm:text-sm font-medium">BNB</span>
-                        <FontAwesomeIcon icon={faCoins} className="text-lg sm:text-xl" />
-                      </div>
-                      <p className="text-lg sm:text-xl font-bold mb-1">
-                        ${marketData.bnb.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}
-                      </p>
-                      <p className={`text-xs sm:text-sm font-medium ${
-                        marketData.bnb.change_24h >= 0 ? 'text-green-100' : 'text-red-100'
-                      }`}>
-                        {marketData.bnb.change_24h >= 0 ? '+' : ''}{marketData.bnb.change_24h.toFixed(2)}%
-                      </p>
-                    </div>
-                  )}
-                  {marketData.sp500 && (
-                    <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg p-3 sm:p-4 text-white">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs sm:text-sm font-medium">S&P 500</span>
-                        <FontAwesomeIcon icon={faArrowTrendUp} className="text-lg sm:text-xl" />
-                      </div>
-                      <p className="text-lg sm:text-xl font-bold mb-1">
-                        {marketData.sp500.price.toLocaleString('en-US', { maximumFractionDigits: 2 })}
-                      </p>
-                      <p className={`text-xs sm:text-sm font-medium ${
-                        marketData.sp500.change_24h >= 0 ? 'text-green-100' : 'text-red-100'
-                      }`}>
-                        {marketData.sp500.change_24h >= 0 ? '+' : ''}{marketData.sp500.change_24h.toFixed(2)}%
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
             {/* Recent Transactions */}
             <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-gray-100 p-4 sm:p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4">
@@ -400,16 +393,14 @@ export default function Home() {
                       className="flex items-center justify-between p-3 sm:p-4 bg-white rounded-lg border border-gray-100 hover:shadow-md transition-shadow"
                     >
                       <div className="flex items-center space-x-2 sm:space-x-4 flex-1 min-w-0">
-                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                          transaction.type === 'income'
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${transaction.type === 'income'
                             ? 'bg-green-100'
                             : 'bg-red-100'
-                        }`}>
-                          <FontAwesomeIcon 
-                            icon={transaction.type === 'income' ? faArrowTrendUp : faArrowTrendDown} 
-                            className={`text-xl sm:text-2xl ${
-                              transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
-                            }`}
+                          }`}>
+                          <FontAwesomeIcon
+                            icon={transaction.type === 'income' ? faArrowTrendUp : faArrowTrendDown}
+                            className={`text-xl sm:text-2xl ${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
+                              }`}
                           />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -424,9 +415,8 @@ export default function Home() {
                           </div>
                         </div>
                       </div>
-                      <div className={`text-base sm:text-lg font-bold ml-2 flex-shrink-0 ${
-                        transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
-                      }`}>
+                      <div className={`text-base sm:text-lg font-bold ml-2 flex-shrink-0 ${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
+                        }`}>
                         {transaction.type === 'income' ? '+' : '-'}{formatCurrency(transaction.amount)}
                       </div>
                     </div>
