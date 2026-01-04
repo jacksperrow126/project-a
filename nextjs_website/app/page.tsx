@@ -4,11 +4,10 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { getTransactions, getTransactionTotals, getAllMarketData, type Transaction, type AllMarketData } from '@/lib/api'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import Image from 'next/image'
 import {
   faDollarSign,
   faChartLine,
-  faWallet,
-  faStickyNote,
   faChartBar,
   faBriefcase,
   faCoins,
@@ -19,10 +18,7 @@ import {
   faCreditCard,
   faNoteSticky,
   faChartLine as faStockChart,
-  faSackDollar,
   faCircleDollarToSlot,
-  faMinus,
-  faPlus
 } from '@fortawesome/free-solid-svg-icons'
 
 export default function Home() {
@@ -71,12 +67,10 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50">
       {/* Header */}
-      <header className="w-full px-4 sm:px-6 py-6 border-b border-purple-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
-        <nav className="max-w-7xl mx-auto flex items-center justify-center">
+      <header className="w-full px-4 sm:px-6 py-3 border-b border-purple-100 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
+        <nav className="max-w-7xl mx-auto flex items-center">
           <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-purple-500 via-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
-              <span className="text-white text-xl sm:text-2xl font-bold">VL</span>
-            </div>
+            <Image src="/favicon.ico" alt="Valy Life Logo" width={60} height={60} />
             <span className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 bg-clip-text text-transparent group-hover:from-purple-700 group-hover:via-indigo-700 group-hover:to-purple-800 transition-all duration-300">
               Valy Life
             </span>
@@ -86,11 +80,6 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Page Title */}
-        <div className="mb-6 sm:mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Finance Dashboard</h1>
-          <p className="text-sm sm:text-base text-gray-600">Overview of your financial status</p>
-        </div>
-
         {loading ? (
           <div className="text-center py-12">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
@@ -99,58 +88,65 @@ export default function Home() {
         ) : (
           <>
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-              {/* Total Income */}
-              <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-4 sm:p-6 shadow-lg text-white">
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-green-100 text-xs sm:text-sm mb-1">Total Income</p>
-                    <p className="text-2xl sm:text-3xl font-bold truncate">{formatCurrency(totals.total_income)}</p>
-                  </div>
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm flex-shrink-0 ml-2">
-                    <FontAwesomeIcon icon={faCircleDollarToSlot} className="text-2xl sm:text-3xl" />
-                  </div>
-                </div>
-                <div className="flex items-center text-green-100 text-xs sm:text-sm">
-                  <span>All time income</span>
-                </div>
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-gray-100 p-4 sm:p-6 shadow-sm mb-6 sm:mb-8">
+              <div className="mb-6 sm:mb-8">
+                <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Finance Dashboard</h1>
+                <p className="text-sm sm:text-base text-gray-600">Overview of your financial status</p>
               </div>
-
-              {/* Total Expenses */}
-              <div className="bg-gradient-to-br from-red-500 to-rose-600 rounded-xl p-4 sm:p-6 shadow-lg text-white">
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-red-100 text-xs sm:text-sm mb-1">Total Expenses</p>
-                    <p className="text-2xl sm:text-3xl font-bold truncate">{formatCurrency(totals.total_expenses)}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+                {/* Total Income */}
+                <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-4 sm:p-6 shadow-lg text-white">
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-green-100 text-xs sm:text-sm mb-1">Total Income</p>
+                      <p className="text-2xl sm:text-3xl font-bold truncate">{formatCurrency(totals.total_income)}</p>
+                    </div>
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm flex-shrink-0 ml-2">
+                      <FontAwesomeIcon icon={faCircleDollarToSlot} className="text-2xl sm:text-3xl" />
+                    </div>
                   </div>
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm flex-shrink-0 ml-2">
-                    <FontAwesomeIcon icon={faDollarSign} className="text-2xl sm:text-3xl" />
+                  <div className="flex items-center text-green-100 text-xs sm:text-sm">
+                    <span>All time income</span>
                   </div>
                 </div>
-                <div className="flex items-center text-red-100 text-xs sm:text-sm">
-                  <span>All time expenses</span>
-                </div>
-              </div>
 
-              {/* Balance */}
-              <div className={`bg-gradient-to-br rounded-xl p-4 sm:p-6 shadow-lg text-white sm:col-span-2 lg:col-span-1 ${totals.balance >= 0
+                {/* Total Expenses */}
+                <div className="bg-gradient-to-br from-red-500 to-rose-600 rounded-xl p-4 sm:p-6 shadow-lg text-white">
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-red-100 text-xs sm:text-sm mb-1">Total Expenses</p>
+                      <p className="text-2xl sm:text-3xl font-bold truncate">{formatCurrency(totals.total_expenses)}</p>
+                    </div>
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm flex-shrink-0 ml-2">
+                      <FontAwesomeIcon icon={faDollarSign} className="text-2xl sm:text-3xl" />
+                    </div>
+                  </div>
+                  <div className="flex items-center text-red-100 text-xs sm:text-sm">
+                    <span>All time expenses</span>
+                  </div>
+                </div>
+
+                {/* Balance */}
+                <div className={`bg-gradient-to-br rounded-xl p-4 sm:p-6 shadow-lg text-white sm:col-span-2 lg:col-span-1 ${totals.balance >= 0
                   ? 'from-blue-500 to-cyan-600'
                   : 'from-orange-500 to-red-600'
-                }`}>
-                <div className="flex items-center justify-between mb-3 sm:mb-4">
-                  <div className="flex-1 min-w-0">
-                    <p className="text-white/80 text-xs sm:text-sm mb-1">Balance</p>
-                    <p className="text-2xl sm:text-3xl font-bold truncate">{formatCurrency(totals.balance)}</p>
+                  }`}>
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white/80 text-xs sm:text-sm mb-1">Balance</p>
+                      <p className="text-2xl sm:text-3xl font-bold truncate">{formatCurrency(totals.balance)}</p>
+                    </div>
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm flex-shrink-0 ml-2">
+                      <FontAwesomeIcon icon={faChartLine} className="text-2xl sm:text-3xl" />
+                    </div>
                   </div>
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm flex-shrink-0 ml-2">
-                    <FontAwesomeIcon icon={faChartLine} className="text-2xl sm:text-3xl" />
+                  <div className="flex items-center text-white/80 text-xs sm:text-sm">
+                    <span>{totals.balance >= 0 ? 'Positive balance' : 'Negative balance'}</span>
                   </div>
-                </div>
-                <div className="flex items-center text-white/80 text-xs sm:text-sm">
-                  <span>{totals.balance >= 0 ? 'Positive balance' : 'Negative balance'}</span>
                 </div>
               </div>
             </div>
+
             {/* Market Data Summary */}
             {marketData && (
               <div className="bg-white/60 backdrop-blur-sm rounded-xl border border-gray-100 p-4 sm:p-6 shadow-sm mb-6 sm:mb-8">
@@ -394,8 +390,8 @@ export default function Home() {
                     >
                       <div className="flex items-center space-x-2 sm:space-x-4 flex-1 min-w-0">
                         <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${transaction.type === 'income'
-                            ? 'bg-green-100'
-                            : 'bg-red-100'
+                          ? 'bg-green-100'
+                          : 'bg-red-100'
                           }`}>
                           <FontAwesomeIcon
                             icon={transaction.type === 'income' ? faArrowTrendUp : faArrowTrendDown}
